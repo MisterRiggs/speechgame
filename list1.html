@@ -1,0 +1,179 @@
+<html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body style="background-color:Chartreuse ;">
+<style type="text/css">
+.wrapper {
+  text-align: center;
+  background:#ccc;
+  padding: 20px;  
+}
+.btn-group {
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.inner-btn-group button {
+
+    display:inline-block;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    width:200px;
+}
+.modal{
+    display: none;
+    z-index: 1; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+audio {
+  position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+}
+</style>
+<a href="index.html" class="previous">&laquo; Back</a>
+
+<div id="Correct" class="modal">
+<!-- Modal content -->
+  <div class="modal-content">
+    
+    <p>Correct!</p>
+    <button onclick="next()">Next Question</button>
+  </div>
+</div>
+
+
+
+        <div id="Incorrect" class="modal">
+        <!-- Modal content -->
+          <div class="modal-content">
+            
+            <p>Sorry!</p>
+            <p id="answer"></p>
+            <button  onclick="next()">Next Question</button>
+          </div>
+        </div>
+
+
+
+              <div id="Done" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                  
+                  <p id="results"></p>
+                  <button onclick="location.reload()">Retry</button>
+                </div>
+              </div>  
+
+<body>
+
+<audio id="source" onclick="listened()"" controls>
+  <source  src="" type="audio/ogg">
+</audio>
+<div class="btn-group" >
+<p id="points"></p>
+<div class="inner-btn-group">
+  <button  class="btn btn-primary" id="b1" onclick="checkAnswer(this.innerHTML)" ></button>
+  <button class="btn btn-primary" id="b2" onclick="checkAnswer(this.innerHTML)"></button>
+  </div>
+  <div class="inner-btn-group">
+  <button class="btn btn-primary" id="b3"onclick="checkAnswer(this.innerHTML)"></button>
+  <button class="btn btn-primary" id="b4"onclick="checkAnswer(this.innerHTML)"></button>
+</div>
+</div>
+
+<script type="text/javascript">
+var points=0;
+var question=0;
+var array1=["the","is","are","we","are"];
+var array2=["the","are","is","we","is"];
+var array3=["we","is","are","the","the"];
+var array4=["is","the","are","we","we"];
+var array=[array1,array2,array3,array4]
+
+nameButtons(array1);
+var correct = document.getElementById('Correct')
+var incorrect = document.getElementById('Incorrect')
+var done = document.getElementById('Done')
+
+var rNum=0;
+function listened(){
+  listened=true;
+}        
+function nameButtons(items){
+question++;
+
+document.getElementById('b1').innerHTML = items[0];
+document.getElementById('b2').innerHTML = items[1];
+document.getElementById('b3').innerHTML = items[2];
+document.getElementById('b4').innerHTML = items[3];
+document.getElementById('source').src = items[4]+".ogg";
+
+}
+function checkAnswer(id){
+  
+  if(id==array[rNum][4]){
+  points++;
+  document.getElementById('points').innerHTML="points: "+points;
+  correct.style.display = "block";
+
+}else {
+  document.getElementById('answer').innerHTML="Answer: "+array[rNum][4];
+  incorrect.style.display = "block";
+  
+}
+
+
+
+}
+var temp=[];
+function next(){
+correct.style.display = "none"; 
+incorrect.style.display = "none"; 
+
+if (question==20){
+   document.getElementById('results').innerHTML=points+"/20";
+   done.style.display = "block";
+}
+
+
+temp.push(rNum);
+
+if(temp.length==4){
+  temp=[];
+}
+rNum=Math.floor(Math.random() * 4); 
+ 
+while(temp.includes(rNum)){
+  
+  rNum=Math.floor(Math.random() * 4); }
+
+nameButtons(array[rNum]);
+
+}
+
+</script>
+
+</body>
+</html>
